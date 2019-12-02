@@ -20,9 +20,7 @@ func ParseNumbers(filename string) []int {
 	return ret
 }
 
-func main() {
-	numbers := ParseNumbers("data.txt")
-	fmt.Println(numbers)
+func CalcResult(numbers []int) int {
 	for i := 0; i <= len(numbers); i += 4 {
 		if numbers[i] == 99 {
 			break
@@ -44,5 +42,35 @@ func main() {
 			numbers[resPos] = numbers[leftPos] * numbers[rightPos]
 		}
 	}
-	fmt.Println(numbers)
+	return numbers[0]
+}
+
+func CheckResults(numbers []int) (int, int) {
+	for i := 0; i < 100; i++ {
+		for j := 0; j < 100; j++ {
+			newNumbers := make([]int, len(numbers))
+			copy(newNumbers, numbers)
+			newNumbers[1] = i
+			newNumbers[2] = j
+			result := CalcResult(newNumbers)
+			if result == 19690720 {
+				return i, j
+			}
+		}
+	}
+	return 0, 0
+}
+
+func main() {
+	numbers := ParseNumbers("data.txt")
+	// fmt.Println(numbers)
+
+	numbers2 := make([]int, len(numbers))
+	copy(numbers2, numbers)
+
+	result := CalcResult(numbers2)
+	fmt.Println(result)
+
+	noun, verb := CheckResults(numbers)
+	fmt.Println(noun, verb)
 }
